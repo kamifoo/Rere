@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework.Constraints;
+using Rere.Core.Exceptions;
 using Rere.Core.Models.Flight;
 using Rere.Core.Services.Flight;
 
@@ -12,7 +12,8 @@ public class FlightsController(IFlightService service) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Flight>>> GetAllFlights()
     {
-        return new OkObjectResult(await service.GetAllFlightAsync());
+        var allFlightAsync = await service.GetAllFlightAsync();
+        return Ok(allFlightAsync);
     }
 
     [HttpGet]
@@ -20,7 +21,48 @@ public class FlightsController(IFlightService service) : ControllerBase
     public async Task<ActionResult<Flight>> GetFlightById(int id)
     {
         var flight = await service.GetFlightByIdAsync(id);
-        if (flight == null) return new NotFoundResult();
-        return new OkObjectResult(flight);
+        if (flight == null) return NotFound();
+        return Ok(flight);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<int>> CreateFlight(Flight newFlight)
+    {
+        var flightId = await service.CreateFlightAsync(newFlight);
+        // Return a relative URI to the new flight
+        var flightUri = $"api/flights/{flightId}";
+        return Created(flightUri, flightId);
+    }
+
+    [HttpPut]
+    [Route("{id}")]
+    public async Task<ActionResult> UpdateFlight(int id, [FromBody] Flight flightToUpdate)
+    {
+        try
+        {
+            await service.UpdateFlightAsync(id, flightToUpdate);
+            return Ok();
+        }
+        catch (ResourceNotFoundException<Flight>)
+        {
+            // TODO Logger can log
+            return NoContent();
+        }
+    }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public async Task<ActionResult> DeleteFlight(int id)
+    {
+        try
+        {
+            await service.DeleteFlightAsync(id);
+            return Ok();
+        }
+        catch (ResourceNotFoundException<Flight>)
+        {
+            // TODO Logger can log
+            return NoContent();
+        }
     }
 }

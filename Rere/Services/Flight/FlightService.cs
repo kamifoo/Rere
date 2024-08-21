@@ -16,12 +16,12 @@ public class FlightService(IFlightRepository flightRepository) : IFlightService
         throw new NotImplementedException();
     }
 
-    public Task CreateFlightAsync(FlightModel flight)
+    public Task<int> CreateFlightAsync(FlightModel flight)
     {
         throw new NotImplementedException();
     }
 
-    public Task UpdateFlightAsync(FlightModel flight)
+    public Task UpdateFlightAsync(int id, FlightModel flight)
     {
         throw new NotImplementedException();
     }

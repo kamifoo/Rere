@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using Rere.Controller;
+using Rere.Core.Exceptions;
 using Rere.Core.Models.Flight;
 using Rere.Core.Services.Flight;
 
@@ -82,5 +83,60 @@ public class FlightsControllerTests
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Result, Is.InstanceOf<NotFoundResult>());
+    }
+
+    [Test]
+    public async Task CreateFlight_ReturnsCreatedAtActionResult()
+    {
+        var newFlight = new Flight { Id = 1 };
+        _flightServiceMock
+            .Setup(service => service.CreateFlightAsync(It.IsAny<Flight>()))
+            .ReturnsAsync(newFlight.Id);
+
+        var result = await _controllerUnderTest.CreateFlight(newFlight);
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Result, Is.InstanceOf<CreatedResult>());
+        Assert.That(((CreatedResult)result.Result!).Value, Is.EqualTo(newFlight.Id));
+    }
+
+    [Test]
+    public async Task UpdateFlight_ReturnsOkResult()
+    {
+        var flightToUpdate = new Flight { Id = 1 };
+        _flightServiceMock
+            .Setup(service => service.UpdateFlightAsync(It.IsAny<int>(), It.IsAny<Flight>()));
+
+        var result = await _controllerUnderTest.UpdateFlight(1, flightToUpdate);
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result, Is.InstanceOf<OkResult>());
+    }
+
+    [Test]
+    public async Task UpdateFlight_ReturnsNotFoundResult_WhenFlightDoesNotExist()
+    {
+        _flightServiceMock
+            .Setup(service => service.UpdateFlightAsync(It.IsAny<int>(), It.IsAny<Flight>()))
+            .Throws<ResourceNotFoundException<Flight>>();
+
+        var flightToUpdate = new Flight { Id = 1 };
+        var result = await _controllerUnderTest.UpdateFlight(1, flightToUpdate);
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result, Is.InstanceOf<NoContentResult>());
+    }
+
+    [Test]
+    public async Task DeleteFlight_ReturnsNoContentResult()
+    {
+        _flightServiceMock
+            .Setup(service => service.DeleteFlightAsync(It.IsAny<int>()))
+            .Throws<ResourceNotFoundException<Flight>>();
+
+        var result = await _controllerUnderTest.DeleteFlight(1);
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result, Is.InstanceOf<NoContentResult>());
     }
 }
