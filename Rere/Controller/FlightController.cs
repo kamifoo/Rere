@@ -1,11 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
+using Rere.Core.Models.Flight;
+using Rere.Core.Services.Flight;
 
 namespace Rere.Controller;
 
-public class FlightController
+[ApiController]
+[Route("api/[controller]/")]
+public class FlightController(IFlightService service) : ControllerBase
 {
-    public async Task<ActionResult<OkObjectResult>> GetAllFlights()
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Flight>>> GetAllFlights()
     {
-        throw new NotImplementedException();
+        var allFlightAsync = await service.GetAllFlightAsync();
+        return new OkObjectResult(allFlightAsync.ToList());
     }
 }

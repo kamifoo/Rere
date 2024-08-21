@@ -17,7 +17,7 @@ public class FlightControllerTests
     public void Setup()
     {
         _flightServiceMock = new Mock<IFlightService>();
-        _controllerUnderTest = new FlightController();
+        _controllerUnderTest = new FlightController(_flightServiceMock.Object);
     }
 
     [Test]
@@ -34,7 +34,7 @@ public class FlightControllerTests
 
         // Assert
         Assert.That(result, Is.Not.Null);
-        Assert.That(result, Is.InstanceOf<OkObjectResult>());
-        Assert.That(result.Value, Is.SameAs(flights));
+        Assert.That(result.Result, Is.InstanceOf<OkObjectResult>());
+        Assert.That(((OkObjectResult)result.Result!).Value, Is.EqualTo(flights));
     }
 }
