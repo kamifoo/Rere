@@ -9,35 +9,33 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="6.12.0" />
-        <PackageReference Include="MediatR" Version="12.4.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.8" />
+        <PackageReference Include="FluentAssertions" Version="6.12.0"/>
+        <PackageReference Include="MediatR" Version="12.4.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.8"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.3"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
-        <PackageReference Include="Moq" Version="4.20.70" />
-        <PackageReference Include="NUnit" Version="4.1.0" />
-        <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
-        <PackageReference Include="SpecFlow" Version="3.9.74" />
-        <PackageReference Include="SpecFlow.NUnit" Version="3.9.74" />
-        <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.74" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.8"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0"/>
+        <PackageReference Include="Moq" Version="4.20.70"/>
+        <PackageReference Include="NUnit" Version="4.1.0"/>
+        <PackageReference Include="NUnit3TestAdapter" Version="4.6.0"/>
+        <PackageReference Include="SpecFlow" Version="3.9.74"/>
+        <PackageReference Include="SpecFlow.NUnit" Version="3.9.74"/>
+        <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.74"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Rere.Core\Rere.Core.csproj" />
+        <ProjectReference Include="..\Rere.Core\Rere.Core.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="DTOs\" />
-      <Folder Include="Handlers\" />
-      <Folder Include="Infrastructure\Entities\" />
-      <Folder Include="Infrastructure\Logging\" />
-      <Folder Include="Repositories\" />
-      <Folder Include="Services\" />
+        <Folder Include="DTOs\"/>
+        <Folder Include="Handlers\"/>
+        <Folder Include="Infrastructure\Entities\"/>
+        <Folder Include="Infrastructure\Logging\"/>
     </ItemGroup>
 
 </Project>

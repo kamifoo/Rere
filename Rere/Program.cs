@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Rere.Core.Repositories.Flight;
+using Rere.Core.Services.Flight;
 using Rere.Infrastructure.Database;
+using Rere.Repositories.Flight;
+using Rere.Services.Flight;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +17,8 @@ builder.Services.AddDbContext<RereDbContext>(options =>
 );
 
 // TODO Dependency Injections
+builder.Services.AddScoped<IFlightRepository, FlightRepository>();
+builder.Services.AddScoped<IFlightService, FlightService>();
 
 var app = builder.Build();
 
