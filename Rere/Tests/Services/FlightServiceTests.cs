@@ -76,27 +76,27 @@ public class FlightServiceTests
         var result = await _flightService.CreateFlightAsync(flight);
 
         _flightRepositoryMock.Verify(repo => repo.AddAsync(flight), Times.Once);
-        Assert.That(result, Is.EqualTo(flight));
+        Assert.That(result, Is.EqualTo(flight.Id));
     }
 
     [Test]
-    public async Task UpdateFlight_CallsUpdateAsync_AndReturnsCompletedTask_WhenFlightExists()
+    public Task UpdateFlight_CallsUpdateAsync_AndReturnsCompletedTask_WhenFlightExists()
     {
         var flight = new Flight { Id = 1 };
 
         _flightRepositoryMock
-            .Setup(repo => repo.GetByIdOrNullAsync(It.IsAny<int>()))
-            .ReturnsAsync(flight);
+            .Setup(repo => repo.ExistsAsync(It.IsAny<int>()))
+            .ReturnsAsync(true);
         _flightRepositoryMock
-            .Setup(repo => repo.UpdateAsync(It.IsAny<Flight>()))
-            .Returns(Task.CompletedTask);
+            .Setup(repo => repo.UpdateAsync(It.IsAny<Flight>()));
 
         Assert.DoesNotThrowAsync(async () => await _flightService.UpdateFlightAsync(1, flight));
         _flightRepositoryMock.Verify(repo => repo.UpdateAsync(flight), Times.Once);
+        return Task.CompletedTask;
     }
 
     [Test]
-    public async Task UpdateFlight_ThrowsResourceNotFoundException_WhenFlightDoesNotExist()
+    public Task UpdateFlight_ThrowsResourceNotFoundException_WhenFlightDoesNotExist()
     {
         var flight = new Flight { Id = 1 };
 
@@ -106,26 +106,30 @@ public class FlightServiceTests
 
         Assert.ThrowsAsync<ResourceNotFoundException<Flight>>(async () =>
             await _flightService.UpdateFlightAsync(1, flight));
+        return Task.CompletedTask;
     }
 
     [Test]
-    public async Task DeleteFlight_CallsDeleteAsync_AndReturnsTrue_WhenFlightExists()
+    public Task DeleteFlight_CallsDeleteAsync_AndReturnsTrue_WhenFlightExists()
     {
         var flight = new Flight { Id = 1 };
 
         _flightRepositoryMock
+            .Setup(repo => repo.ExistsAsync(It.IsAny<int>()))
+            .ReturnsAsync(true);
+        _flightRepositoryMock
             .Setup(repo => repo.GetByIdOrNullAsync(It.IsAny<int>()))
             .ReturnsAsync(flight);
         _flightRepositoryMock
-            .Setup(repo => repo.DeleteAsync(It.IsAny<Flight>()))
-            .Returns(Task.CompletedTask);
+            .Setup(repo => repo.DeleteAsync(It.IsAny<Flight>()));
 
         Assert.DoesNotThrowAsync(async () => await _flightService.DeleteFlightAsync(1));
         _flightRepositoryMock.Verify(repo => repo.DeleteAsync(flight), Times.Once);
+        return Task.CompletedTask;
     }
 
     [Test]
-    public async Task DeleteFlight_ThrowsResourceNotFoundException_WhenFlightDoesNotExist()
+    public Task DeleteFlight_ThrowsResourceNotFoundException_WhenFlightDoesNotExist()
     {
         _flightRepositoryMock
             .Setup(repo => repo.GetByIdOrNullAsync(It.IsAny<int>()))
@@ -133,5 +137,6 @@ public class FlightServiceTests
 
         Assert.ThrowsAsync<ResourceNotFoundException<Flight>>(async () =>
             await _flightService.DeleteFlightAsync(999));
+        return Task.CompletedTask;
     }
 }

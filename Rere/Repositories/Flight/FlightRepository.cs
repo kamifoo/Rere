@@ -12,6 +12,11 @@ public class FlightRepository(IFlightReader reader, IFlightWriter writer) : IFli
         throw new NotImplementedException();
     }
 
+    public Task<bool> ExistsAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<FlightModel?> GetByIdOrNullAsync(int id)
     {
         throw new NotImplementedException();

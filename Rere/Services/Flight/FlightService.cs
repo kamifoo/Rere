@@ -1,3 +1,4 @@
+using Rere.Core.Exceptions;
 using Rere.Core.Repositories.Flight;
 using Rere.Core.Services.Flight;
 using FlightModel = Rere.Core.Models.Flight.Flight;
@@ -11,23 +12,30 @@ public class FlightService(IFlightRepository flightRepository) : IFlightService
         return await flightRepository.ListAsync();
     }
 
-    public Task<FlightModel?> GetFlightByIdAsync(int id)
+    public async Task<FlightModel?> GetFlightByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await flightRepository.GetByIdOrNullAsync(id);
     }
 
-    public Task<int> CreateFlightAsync(FlightModel flight)
+    public async Task<int> CreateFlightAsync(FlightModel flight)
     {
-        throw new NotImplementedException();
+        return await flightRepository.AddAsync(flight);
     }
 
-    public Task UpdateFlightAsync(int id, FlightModel flight)
+    public async Task UpdateFlightAsync(int id, FlightModel flight)
     {
-        throw new NotImplementedException();
+        if (await flightRepository.ExistsAsync(id) is false)
+            throw new ResourceNotFoundException<FlightModel>(id);
+
+        await flightRepository.UpdateAsync(flight);
     }
 
-    public Task DeleteFlightAsync(int id)
+    public async Task DeleteFlightAsync(int id)
     {
-        throw new NotImplementedException();
+        if (await flightRepository.ExistsAsync(id) is false)
+            throw new ResourceNotFoundException<FlightModel>(id);
+
+        var flight = flightRepository.GetByIdOrNullAsync(id).Result!;
+        await flightRepository.DeleteAsync(flight);
     }
 }

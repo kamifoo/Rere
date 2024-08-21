@@ -10,7 +10,7 @@ public class ResourceNotFoundException<T> : Exception
     {
     }
 
-    public ResourceNotFoundException(string resourceId) : base(
+    public ResourceNotFoundException(int resourceId) : base(
         $"The requested model {typeof(T)} with {resourceId} was not found.")
     {
     }
