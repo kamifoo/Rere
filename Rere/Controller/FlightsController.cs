@@ -6,12 +6,11 @@ namespace Rere.Controller;
 
 [ApiController]
 [Route("api/[controller]/")]
-public class FlightController(IFlightService service) : ControllerBase
+public class FlightsController(IFlightService service) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Flight>>> GetAllFlights()
     {
-        var allFlightAsync = await service.GetAllFlightAsync();
-        return new OkObjectResult(allFlightAsync.ToList());
+        return new OkObjectResult((await service.GetAllFlightAsync()));
     }
 }
