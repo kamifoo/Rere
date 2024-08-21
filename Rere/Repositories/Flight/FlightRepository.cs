@@ -12,7 +12,7 @@ public class FlightRepository(IFlightReader reader, IFlightWriter writer) : IFli
         throw new NotImplementedException();
     }
 
-    public Task<FlightModel> GetByIdAsync(int id)
+    public Task<FlightModel?> GetByIdOrNullAsync(int id)
     {
         throw new NotImplementedException();
     }
