@@ -6,4 +6,5 @@ public interface IFlightReader
 {
     Task<FlightModel> GetFlightByIdAsync(int id);
     Task<IEnumerable<FlightModel>> ListFlightsAsync();
+    Task<IEnumerable<FlightModel>> SearchAsync(SearchQuery<FlightModel> query);
 }

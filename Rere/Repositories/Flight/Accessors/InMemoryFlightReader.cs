@@ -1,15 +1,22 @@
+using Rere.Core.Repositories;
 using Rere.Core.Repositories.Flight.Accessors;
+using FlightModel = Rere.Core.Models.Flight.Flight;
 
 namespace Rere.Repositories.Flight.Accessors;
 
 public class InMemoryFlightReader : IFlightReader
 {
-    public Task<Core.Models.Flight.Flight> GetFlightByIdAsync(int id)
+    public Task<FlightModel> GetFlightByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<Core.Models.Flight.Flight>> ListFlightsAsync()
+    public Task<IEnumerable<FlightModel>> ListFlightsAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<FlightModel>> SearchAsync(SearchQuery<FlightModel> query)
     {
         throw new NotImplementedException();
     }
