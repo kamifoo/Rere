@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -5,6 +6,7 @@ using Rere.Controller;
 using Rere.Core.Exceptions;
 using Rere.Core.Models.Flight;
 using Rere.Core.Services.Flight;
+using Rere.DTOs.Flight;
 
 namespace Rere.Tests.Controllers;
 
@@ -12,13 +14,15 @@ namespace Rere.Tests.Controllers;
 public class FlightsControllerTests
 {
     private Mock<IFlightService> _flightServiceMock;
+    private Mock<IMapper> _flightMapperMock;
     private FlightsController _controllerUnderTest;
 
     [SetUp]
     public void Setup()
     {
         _flightServiceMock = new Mock<IFlightService>();
-        _controllerUnderTest = new FlightsController(_flightServiceMock.Object);
+        _flightMapperMock = new Mock<IMapper>();
+        _controllerUnderTest = new FlightsController(_flightServiceMock.Object, _flightMapperMock.Object);
     }
 
     [Test]
@@ -88,22 +92,22 @@ public class FlightsControllerTests
     [Test]
     public async Task CreateFlight_ReturnsCreatedAtActionResult()
     {
-        var newFlight = new Flight { Id = 1 };
+        var newFlight = new CreateFlightDto() { };
         _flightServiceMock
             .Setup(service => service.CreateFlightAsync(It.IsAny<Flight>()))
-            .ReturnsAsync(newFlight.Id);
+            .ReturnsAsync(1);
 
         var result = await _controllerUnderTest.CreateFlight(newFlight);
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Result, Is.InstanceOf<CreatedResult>());
-        Assert.That(((CreatedResult)result.Result!).Value, Is.EqualTo(newFlight.Id));
+        Assert.That(((CreatedResult)result.Result!).Value, Is.EqualTo(1));
     }
 
     [Test]
     public async Task UpdateFlight_ReturnsOkResult()
     {
-        var flightToUpdate = new Flight { Id = 1 };
+        var flightToUpdate = new UpdateFlightDto() { Id = 1 };
         _flightServiceMock
             .Setup(service => service.UpdateFlightAsync(It.IsAny<int>(), It.IsAny<Flight>()));
 
@@ -120,7 +124,7 @@ public class FlightsControllerTests
             .Setup(service => service.UpdateFlightAsync(It.IsAny<int>(), It.IsAny<Flight>()))
             .Throws<ResourceNotFoundException<Flight>>();
 
-        var flightToUpdate = new Flight { Id = 1 };
+        var flightToUpdate = new UpdateFlightDto() { Id = 1 };
         var result = await _controllerUnderTest.UpdateFlight(1, flightToUpdate);
 
         Assert.That(result, Is.Not.Null);

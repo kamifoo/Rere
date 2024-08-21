@@ -3,12 +3,14 @@ using Rere.Core.Repositories.Flight;
 using Rere.Core.Repositories.Flight.Accessors;
 using Rere.Core.Services.Flight;
 using Rere.Infrastructure.Database;
+using Rere.Infrastructure.Mapping;
 using Rere.Repositories.Flight;
 using Rere.Repositories.Flight.Accessors;
 using Rere.Services.Flight;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
