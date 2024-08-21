@@ -11,7 +11,7 @@ public class FlightService(IFlightRepository flightRepository) : IFlightService
         return await flightRepository.ListAsync();
     }
 
-    public Task<FlightModel> GetFlightByIdAsync(int id)
+    public Task<FlightModel?> GetFlightByIdAsync(int id)
     {
         throw new NotImplementedException();
     }

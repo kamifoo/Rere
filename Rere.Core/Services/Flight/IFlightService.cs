@@ -8,7 +8,7 @@ public interface IFlightService
     Task<IEnumerable<FlightModel>> GetAllFlightAsync();
 
     // - GET /api/ﬂights/{id}: Retrieve a speciﬁc ﬂight by ID
-    Task<FlightModel> GetFlightByIdAsync(int id);
+    Task<FlightModel?> GetFlightByIdAsync(int id);
 
     // - POST /api/ﬂights: Create a new ﬂight
     Task CreateFlightAsync(FlightModel flight);
