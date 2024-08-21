@@ -1,21 +1,29 @@
 using Rere.Core.Repositories.Flight.Accessors;
+using Rere.Infrastructure.Database;
+using FlightModel = Rere.Core.Models.Flight.Flight;
 
 namespace Rere.Repositories.Flight.Accessors;
 
-public class InMemoryFlightWriter : IFlightWriter
+public class InMemoryFlightWriter(RereDbContext context) : IFlightWriter
 {
-    public Task<int> AddFlight(Core.Models.Flight.Flight flight)
+    public async Task<int> AddFlight(FlightModel flight)
     {
-        throw new NotImplementedException();
+        context.Flights.Add(flight);
+        await context.SaveChangesAsync();
+        return flight.Id;
     }
 
-    public Task UpdateFlight(Core.Models.Flight.Flight flight)
+    public async Task UpdateFlight(FlightModel flight)
     {
-        throw new NotImplementedException();
+        var existingFlight = await context.Flights.FindAsync(flight.Id);
+        context.Entry(existingFlight!).CurrentValues.SetValues(flight);
+        await context.SaveChangesAsync();
     }
 
-    public Task DeleteFlight(int id)
+    public async Task DeleteFlight(int id)
     {
-        throw new NotImplementedException();
+        var existingFlight = await context.Flights.FindAsync(id);
+        context.Flights.Remove(existingFlight!);
+        await context.SaveChangesAsync();
     }
 }

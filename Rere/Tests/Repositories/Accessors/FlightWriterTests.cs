@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Rere.Core.Repositories.Flight.Accessors;
 using Rere.Infrastructure.Database;
 using Rere.Repositories.Flight.Accessors;
-using FlightModel = Rere.Core.Models.Flight.Flight;
+using Rere.Tests.Fixtures;
 
 namespace Rere.Tests.Repositories.Accessors;
 
@@ -21,13 +21,9 @@ public class FlightWriterTests
             .Options;
 
         _context = new RereDbContext(options);
-        _flightWriter = new InMemoryFlightWriter();
+        _flightWriter = new InMemoryFlightWriter(_context);
 
-        _context.Flights.AddRange(new[]
-        {
-            new FlightModel { Id = 1, FlightNumber = "FL001" },
-            new FlightModel { Id = 2, FlightNumber = "FL002" }
-        });
+        _context.Flights.AddRange(TestFlightFixture.GetTestFlights());
         _context.SaveChanges();
     }
 
@@ -41,27 +37,30 @@ public class FlightWriterTests
     [Test]
     public async Task AddFlight_AddsFlightToDatabase_AndReturnsFlightId()
     {
-        var newFlight = new FlightModel { Id = 3, FlightNumber = "FL003" };
+        var allFlights = _context.Flights.ToList();
+
+        var newFlight = TestFlightFixture.GetSingleTestFlightWithoutId();
 
         var resultId = await _flightWriter.AddFlight(newFlight);
 
-        Assert.That(resultId, Is.EqualTo(3));
+        Assert.That(resultId, Is.EqualTo(allFlights.Count + 1));
 
-        var flightInDb = await _context.Flights.FindAsync(3);
-        Assert.That(flightInDb, Is.Not.Null);
-        Assert.That(flightInDb.FlightNumber, Is.EqualTo("FL003"));
+        var newFlightInDb = await _context.Flights.FindAsync(resultId);
+        Assert.That(newFlightInDb, Is.Not.Null);
+        Assert.That(newFlightInDb!.FlightNumber, Is.EqualTo(newFlight.FlightNumber));
     }
 
     [Test]
     public async Task UpdateFlight_UpdatesFlightInDatabase()
     {
         var flight = await _context.Flights.FindAsync(1);
-        flight.FlightNumber = "FL001-Updated";
+        Assert.That(flight, Is.Not.Null);
 
+        flight!.FlightNumber = "FL001-Updated";
         await _flightWriter.UpdateFlight(flight);
 
         var updatedFlight = await _context.Flights.FindAsync(1);
-        Assert.That(updatedFlight.FlightNumber, Is.EqualTo("FL001-Updated"));
+        Assert.That(updatedFlight!.FlightNumber, Is.EqualTo("FL001-Updated"));
     }
 
     [Test]
@@ -70,6 +69,7 @@ public class FlightWriterTests
         await _flightWriter.DeleteFlight(1);
 
         var result = await _context.Flights.FindAsync(1);
+
         Assert.That(result, Is.Null);
     }
 }
