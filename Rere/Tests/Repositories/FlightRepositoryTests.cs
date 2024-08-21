@@ -38,8 +38,7 @@ public class FlightRepositoryTests
     [Test]
     public async Task ExistsAsync_ReturnsTrue_WhenFlightExists()
     {
-        var flight = new FlightModel { Id = 1 };
-        _flightReaderMock.Setup(reader => reader.GetFlightByIdAsync(1)).ReturnsAsync(flight);
+        _flightReaderMock.Setup(reader => reader.ExistsAsync(1)).ReturnsAsync(true);
 
         var exists = await _flightRepository.ExistsAsync(1);
 

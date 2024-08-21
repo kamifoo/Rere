@@ -11,6 +11,11 @@ public class InMemoryFlightReader : IFlightReader
         throw new NotImplementedException();
     }
 
+    public Task<bool> ExistsAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<IEnumerable<FlightModel>> ListFlightsAsync()
     {
         throw new NotImplementedException();

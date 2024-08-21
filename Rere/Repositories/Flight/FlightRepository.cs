@@ -7,38 +7,38 @@ namespace Rere.Repositories.Flight;
 
 public class FlightRepository(IFlightReader reader, IFlightWriter writer) : IFlightRepository
 {
-    public Task<IEnumerable<FlightModel>> ListAsync()
+    public async Task<IEnumerable<FlightModel>> ListAsync()
     {
-        throw new NotImplementedException();
+        return await reader.ListFlightsAsync();
     }
 
-    public Task<bool> ExistsAsync(int id)
+    public async Task<bool> ExistsAsync(int id)
     {
-        throw new NotImplementedException();
+        return await reader.ExistsAsync(id);
     }
 
-    public Task<FlightModel?> GetByIdOrNullAsync(int id)
+    public async Task<FlightModel?> GetByIdOrNullAsync(int id)
     {
-        throw new NotImplementedException();
+        return await reader.GetFlightByIdAsync(id);
     }
 
-    public Task<IEnumerable<FlightModel>> SearchAsync(SearchQuery<FlightModel> query)
+    public async Task<IEnumerable<FlightModel>> SearchAsync(SearchQuery<FlightModel> query)
     {
-        throw new NotImplementedException();
+        return await reader.SearchAsync(query);
     }
 
-    public Task<int> AddAsync(FlightModel entity)
+    public async Task<int> AddAsync(FlightModel flight)
     {
-        throw new NotImplementedException();
+        return await writer.AddFlight(flight);
     }
 
-    public Task UpdateAsync(FlightModel entity)
+    public async Task UpdateAsync(FlightModel flight)
     {
-        throw new NotImplementedException();
+        await writer.UpdateFlight(flight);
     }
 
-    public Task DeleteAsync(FlightModel entity)
+    public async Task DeleteAsync(FlightModel flight)
     {
-        throw new NotImplementedException();
+        await writer.DeleteFlight(flight.Id);
     }
 }
