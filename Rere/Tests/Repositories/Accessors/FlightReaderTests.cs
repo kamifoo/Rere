@@ -63,16 +63,31 @@ public class FlightReaderTests
     }
 
     [Test]
-    public async Task SearchAsync_FindsFlightsByCriteria()
+    public async Task SearchAsync_FindsFlightsBySingleCriteriaWithNoMatching()
     {
         var query = new FlightSearchQuery()
         {
-            SearchFlightNumbers = ["SW202"]
+            SearchFlightNumbers = ["NZ359"]
         };
         var result = (await _flightReader.SearchAsync(query)).ToArray();
 
         Assert.That(result, Is.Not.Null);
-        Assert.That(result, Has.Exactly(1).Items);
-        Assert.That(result.First().FlightNumber, Is.EqualTo("SW202"));
+        Assert.That(result, Has.Exactly(0).Items);
+    }
+
+    [Test]
+    public async Task SearchAsync_FindsFlightsBySingleCriteriaWithOneMatching()
+    {
+        var query = new FlightSearchQuery()
+        {
+            SearchFlightNumbers = ["NZ421"]
+        };
+
+        var result = (await _flightReader.SearchAsync(query)).ToArray();
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result, Has.Exactly(2).Items);
+        Assert.That(result.First().FlightNumber, Is.EqualTo("NZ421"));
+        Assert.That(result.Last().FlightNumber, Is.EqualTo("NZ421"));
     }
 }

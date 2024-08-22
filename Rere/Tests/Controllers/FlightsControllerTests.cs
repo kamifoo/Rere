@@ -15,6 +15,7 @@ public class FlightsControllerTests
 {
     private Mock<IFlightService> _flightServiceMock;
     private Mock<IMapper> _flightMapperMock;
+    private Mock<ILogger<FlightsController>> _flightControllerLogger;
     private FlightsController _controllerUnderTest;
 
     [SetUp]
@@ -22,7 +23,9 @@ public class FlightsControllerTests
     {
         _flightServiceMock = new Mock<IFlightService>();
         _flightMapperMock = new Mock<IMapper>();
-        _controllerUnderTest = new FlightsController(_flightServiceMock.Object, _flightMapperMock.Object);
+        _flightControllerLogger = new Mock<ILogger<FlightsController>>();
+        _controllerUnderTest =
+            new FlightsController(_flightControllerLogger.Object, _flightServiceMock.Object, _flightMapperMock.Object);
     }
 
     [Test]

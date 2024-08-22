@@ -9,7 +9,8 @@ namespace Rere.Controller;
 
 [ApiController]
 [Route("api/[controller]/")]
-public class FlightsController(IFlightService service, IMapper mapper) : ControllerBase
+public class FlightsController(ILogger<FlightsController> logger, IFlightService service, IMapper mapper)
+    : ControllerBase
 {
     /// <summary>
     /// GET /api/ﬂights: Retrieve all ﬂights
@@ -18,8 +19,19 @@ public class FlightsController(IFlightService service, IMapper mapper) : Control
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Flight>>> GetAllFlights()
     {
-        var allFlightAsync = await service.GetAllFlightAsync();
-        return Ok(allFlightAsync);
+        using (logger.BeginScope("Get All Flights"))
+        {
+            try
+            {
+                var allFlightAsync = await service.GetAllFlightAsync();
+                return Ok(allFlightAsync);
+            }
+            catch (HttpRequestException ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return StatusCode(500, $"Internal Server Error：{ex.Message}");
+            }
+        }
     }
 
     /// <summary>
@@ -31,9 +43,20 @@ public class FlightsController(IFlightService service, IMapper mapper) : Control
     [Route("{id}")]
     public async Task<ActionResult<Flight>> GetFlightById(int id)
     {
-        var flight = await service.GetFlightByIdAsync(id);
-        if (flight == null) return NotFound();
-        return Ok(flight);
+        using (logger.BeginScope("Get Flight By Id"))
+        {
+            try
+            {
+                var flight = await service.GetFlightByIdAsync(id);
+                if (flight == null) return NotFound();
+                return Ok(flight);
+            }
+            catch (HttpRequestException ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return StatusCode(500, $"Internal Server Error：{ex.Message}");
+            }
+        }
     }
 
     /// <summary>
@@ -44,15 +67,26 @@ public class FlightsController(IFlightService service, IMapper mapper) : Control
     [HttpPost]
     public async Task<ActionResult<int>> CreateFlight([FromBody] CreateFlightDto newCreateFlight)
     {
-        if (!ModelState.IsValid)
-            return BadRequest();
+        using (logger.BeginScope("Create Flight"))
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest();
 
-        var newFlight = mapper.Map<Flight>(newCreateFlight);
-        var flightId = await service.CreateFlightAsync(newFlight);
-        // Return a relative URI to the new flight
-        var flightUri = $"api/flights/{flightId}";
+                var newFlight = mapper.Map<Flight>(newCreateFlight);
+                var flightId = await service.CreateFlightAsync(newFlight);
+                // Return a relative URI to the new flight
+                var flightUri = $"api/flights/{flightId}";
 
-        return Created(flightUri, flightId);
+                return Created(flightUri, flightId);
+            }
+            catch (HttpRequestException ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return StatusCode(500, $"Internal Server Error：{ex.Message}");
+            }
+        }
     }
 
     /// <summary>
@@ -65,19 +99,27 @@ public class FlightsController(IFlightService service, IMapper mapper) : Control
     [Route("{id}")]
     public async Task<ActionResult> UpdateFlight(int id, [FromBody] UpdateFlightDto updateFlightDto)
     {
-        try
+        using (logger.BeginScope("Get Flight By Id"))
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest();
 
-            var updateFlight = mapper.Map<Flight>(updateFlightDto);
-            await service.UpdateFlightAsync(id, updateFlight);
-            return Ok();
-        }
-        catch (ResourceNotFoundException<Flight>)
-        {
-            // TODO Logger can log
-            return NoContent();
+                var updateFlight = mapper.Map<Flight>(updateFlightDto);
+                await service.UpdateFlightAsync(id, updateFlight);
+                return Ok();
+            }
+            catch (ResourceNotFoundException<Flight> ex)
+            {
+                logger.LogWarning(ex.Message);
+                return NoContent();
+            }
+            catch (HttpRequestException ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return StatusCode(500, $"Internal Server Error：{ex.Message}");
+            }
         }
     }
 
@@ -95,10 +137,15 @@ public class FlightsController(IFlightService service, IMapper mapper) : Control
             await service.DeleteFlightAsync(id);
             return Ok();
         }
-        catch (ResourceNotFoundException<Flight>)
+        catch (ResourceNotFoundException<Flight> ex)
         {
-            // TODO Logger can log
+            logger.LogWarning(ex.Message);
             return NoContent();
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(ex, ex.Message);
+            return StatusCode(500, $"Internal Server Error：{ex.Message}");
         }
     }
 }
