@@ -72,7 +72,7 @@ public class FlightsControllerTests
             Id = 1
         };
         _flightServiceMock
-            .Setup(service => service.GetFlightByIdAsync(It.IsAny<int>()))!
+            .Setup(service => service.GetFlightByIdOrNullAsync(It.IsAny<int>()))!
             .ReturnsAsync(flight);
         _flightMapperMock
             .Setup(mapper => mapper.Map<Flight, GetFlightDto>(It.IsAny<Flight>()))
@@ -89,7 +89,7 @@ public class FlightsControllerTests
     public async Task GetFlightByUnmatchedId_ReturnsNotFoundResult()
     {
         _flightServiceMock
-            .Setup(service => service.GetFlightByIdAsync(It.IsAny<int>()))!
+            .Setup(service => service.GetFlightByIdOrNullAsync(It.IsAny<int>()))!
             .ReturnsAsync(null as Flight);
 
         var result = await _controllerUnderTest.GetFlightById(999);

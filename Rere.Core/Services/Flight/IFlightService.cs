@@ -16,8 +16,7 @@ public interface IFlightService
     /// </summary>
     /// <param name="id">ID of the flight to be updated</param>
     /// <returns>The flight with the specified ID</returns>
-    /// <exception cref="ResourceNotFoundException{T}">Thrown when the flight with the specified ID is not found.</exception>
-    Task<FlightModel?> GetFlightByIdAsync(int id);
+    Task<FlightModel?> GetFlightByIdOrNullAsync(int id);
 
     /// <summary>
     ///  Create a new ﬂight

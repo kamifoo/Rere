@@ -19,6 +19,8 @@ public class FlightRepository(IFlightReader reader, IFlightWriter writer) : IFli
 
     public async Task<FlightModel?> GetByIdOrNullAsync(int id)
     {
+        if (await ExistsAsync(id) is false)
+            return null;
         return await reader.GetFlightByIdAsync(id);
     }
 

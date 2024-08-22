@@ -47,7 +47,7 @@ public class FlightServiceTests
             .Setup(repo => repo.GetByIdOrNullAsync(It.IsAny<int>()))
             .ReturnsAsync(flight);
 
-        var result = await _flightService.GetFlightByIdAsync(1);
+        var result = await _flightService.GetFlightByIdOrNullAsync(1);
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result!.Id, Is.EqualTo(1));
@@ -60,7 +60,7 @@ public class FlightServiceTests
             .Setup(repo => repo.GetByIdOrNullAsync(It.IsAny<int>()))
             .ReturnsAsync(null as Flight);
 
-        var result = await _flightService.GetFlightByIdAsync(999);
+        var result = await _flightService.GetFlightByIdOrNullAsync(999);
 
         Assert.That(result, Is.Null);
     }

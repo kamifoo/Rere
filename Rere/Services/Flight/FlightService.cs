@@ -12,7 +12,7 @@ public class FlightService(IFlightRepository flightRepository) : IFlightService
         return await flightRepository.ListAsync();
     }
 
-    public async Task<FlightModel?> GetFlightByIdAsync(int id)
+    public async Task<FlightModel?> GetFlightByIdOrNullAsync(int id)
     {
         return await flightRepository.GetByIdOrNullAsync(id);
     }

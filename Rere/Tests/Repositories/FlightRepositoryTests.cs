@@ -60,6 +60,7 @@ public class FlightRepositoryTests
     {
         var flight = new FlightModel { Id = 1 };
         _flightReaderMock.Setup(reader => reader.GetFlightByIdAsync(1)).ReturnsAsync(flight);
+        _flightReaderMock.Setup(reader => reader.ExistsAsync(1)).ReturnsAsync(true);
 
         var result = await _flightRepository.GetByIdOrNullAsync(1);
 
