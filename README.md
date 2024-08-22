@@ -1,6 +1,6 @@
 # Rere
 
-Te reo word: [Rere](https://maoridictionary.co.nz/word/6719)
+Te reo vocabulary: [Rere](https://maoridictionary.co.nz/word/6719)
 
 - `(verb) to fly`
 - `(noun) flight.`
