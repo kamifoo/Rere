@@ -26,8 +26,8 @@ public class FlightMappingProfileTests
             Airline = "NZ",
             DepartureAirport = "WLG",
             ArrivalAirport = "ALK",
-            DepartureTime = DateTime.UtcNow,
-            ArrivalTime = DateTime.UtcNow.AddHours(5),
+            DepartureTime = TimeProvider.System.GetUtcNow().DateTime,
+            ArrivalTime = TimeProvider.System.GetUtcNow().DateTime.AddHours(5),
             Status = FlightStatus.Scheduled
         };
 
@@ -52,8 +52,8 @@ public class FlightMappingProfileTests
             Airline = "NZ",
             DepartureAirport = "WLG",
             ArrivalAirport = "ALK",
-            DepartureTime = DateTime.UtcNow,
-            ArrivalTime = DateTime.UtcNow.AddHours(5),
+            DepartureTime = TimeProvider.System.GetUtcNow().DateTime,
+            ArrivalTime = TimeProvider.System.GetUtcNow().DateTime.AddHours(5),
             Status = FlightStatus.Scheduled
         };
 
@@ -67,5 +67,32 @@ public class FlightMappingProfileTests
         Assert.That(model.DepartureTime, Is.EqualTo(dto.DepartureTime));
         Assert.That(model.ArrivalTime, Is.EqualTo(dto.ArrivalTime));
         Assert.That(model.Status, Is.EqualTo(dto.Status));
+    }
+
+    [Test]
+    public void Should_Map_Flight_To_GetFlightDto()
+    {
+        var flight = new Flight()
+        {
+            Id = 1,
+            FlightNumber = "NZ402",
+            Airline = "NZ",
+            DepartureAirport = "WLG",
+            ArrivalAirport = "ALK",
+            DepartureTime = TimeProvider.System.GetUtcNow().DateTime,
+            ArrivalTime = TimeProvider.System.GetUtcNow().DateTime.AddHours(5),
+            Status = FlightStatus.Scheduled
+        };
+
+        var dto = _mapper.Map<Flight, GetFlightDto>(flight);
+
+        Assert.That(dto.Id, Is.EqualTo(flight.Id));
+        Assert.That(dto.FlightNumber, Is.EqualTo(flight.FlightNumber));
+        Assert.That(dto.Airline, Is.EqualTo(flight.Airline));
+        Assert.That(dto.DepartureAirport, Is.EqualTo(flight.DepartureAirport));
+        Assert.That(dto.ArrivalAirport, Is.EqualTo(flight.ArrivalAirport));
+        Assert.That(dto.DepartureTime, Is.EqualTo(flight.DepartureTime));
+        Assert.That(dto.ArrivalTime, Is.EqualTo(flight.ArrivalTime));
+        Assert.That(dto.Status, Is.EqualTo("Scheduled"));
     }
 }

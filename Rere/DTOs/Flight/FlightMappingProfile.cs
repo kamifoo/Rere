@@ -9,5 +9,9 @@ public class FlightMappingProfile : Profile
     {
         CreateMap<CreateFlightDto, FlightModel>();
         CreateMap<UpdateFlightDto, FlightModel>();
+        CreateMap<FlightModel, GetFlightDto>()
+            .ForMember(flightDto => flightDto.Status,
+                opt =>
+                    opt.MapFrom(flight => flight.Status.ToString()));
     }
 }
