@@ -4,6 +4,7 @@ using Rere.Core.Repositories.Flight.Accessors;
 using Rere.Infrastructure.Database;
 using Rere.Repositories.Flight;
 using Rere.Repositories.Flight.Accessors;
+using Rere.Tests.Fixtures;
 using FlightModel = Rere.Core.Models.Flight.Flight;
 
 namespace Rere.Tests.Repositories.Accessors;
@@ -22,14 +23,9 @@ public class FlightReaderTests
             .Options;
 
         _context = new RereDbContext(options);
-        _flightReader = new InMemoryFlightReader();
+        _flightReader = new InMemoryFlightReader(_context);
 
-        _context.Flights.AddRange(new List<FlightModel>
-        {
-            new() { Id = 1, FlightNumber = "FL001" },
-            new() { Id = 2, FlightNumber = "FL002" }
-        });
-
+        _context.Flights.AddRange(TestFlightFixture.GetTestFlights());
         _context.SaveChanges();
     }
 
@@ -60,19 +56,23 @@ public class FlightReaderTests
     [Test]
     public async Task ListFlightsAsync_ReturnsAllFlights()
     {
+        var flights = TestFlightFixture.GetTestFlights();
         var result = await _flightReader.ListFlightsAsync();
 
-        Assert.That(result, Has.Exactly(2).Items);
+        Assert.That(result, Has.Exactly(flights.Count).Items);
     }
 
     [Test]
     public async Task SearchAsync_FindsFlightsByCriteria()
     {
-        var query = new FlightSearchQuery();
+        var query = new FlightSearchQuery()
+        {
+            SearchFlightNumbers = ["SW202"]
+        };
+        var result = (await _flightReader.SearchAsync(query)).ToArray();
 
-        var result = await _flightReader.SearchAsync(query);
-
+        Assert.That(result, Is.Not.Null);
         Assert.That(result, Has.Exactly(1).Items);
-        Assert.That(result.First().FlightNumber, Is.EqualTo("FL001"));
+        Assert.That(result.First().FlightNumber, Is.EqualTo("SW202"));
     }
 }

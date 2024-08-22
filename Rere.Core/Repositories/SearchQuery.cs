@@ -4,5 +4,6 @@ namespace Rere.Core.Repositories;
 
 public abstract class SearchQuery<T>
 {
-    public Expression<Func<T, bool>>? SearchCriteria { get; set; }
+    public virtual Expression<Func<T, bool>> SearchCriteria { get; } =
+        Expression.Lambda<Func<T, bool>>(Expression.Constant(true), Expression.Parameter(typeof(T)));
 }

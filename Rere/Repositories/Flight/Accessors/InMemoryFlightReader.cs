@@ -1,28 +1,31 @@
+using Microsoft.EntityFrameworkCore;
 using Rere.Core.Repositories;
 using Rere.Core.Repositories.Flight.Accessors;
+using Rere.Infrastructure.Database;
 using FlightModel = Rere.Core.Models.Flight.Flight;
 
 namespace Rere.Repositories.Flight.Accessors;
 
-public class InMemoryFlightReader : IFlightReader
+public class InMemoryFlightReader(RereDbContext context) : IFlightReader
 {
-    public Task<FlightModel> GetFlightByIdAsync(int id)
+    public async Task<FlightModel> GetFlightByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return (await context.Flights.FindAsync(id))!;
     }
 
-    public Task<bool> ExistsAsync(int id)
+    public async Task<bool> ExistsAsync(int id)
     {
-        throw new NotImplementedException();
+        return await context.Flights.AnyAsync(flight => flight.Id == id);
     }
 
-    public Task<IEnumerable<FlightModel>> ListFlightsAsync()
+    public async Task<IEnumerable<FlightModel>> ListFlightsAsync()
     {
-        throw new NotImplementedException();
+        return await context.Flights.ToListAsync();
     }
 
-    public Task<IEnumerable<FlightModel>> SearchAsync(SearchQuery<FlightModel> query)
+    public async Task<IEnumerable<FlightModel>> SearchAsync(SearchQuery<FlightModel> query)
     {
-        throw new NotImplementedException();
+        var querySearchCriteria = query.SearchCriteria;
+        return await context.Flights.Where(querySearchCriteria).ToListAsync();
     }
 }
