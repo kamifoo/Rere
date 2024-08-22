@@ -17,6 +17,8 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     /// </summary>
     /// <returns>All flights</returns>
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<IEnumerable<Flight>>> GetAllFlights()
     {
         using (logger.BeginScope("Get All Flights"))
@@ -41,6 +43,9 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     /// <returns>The flight with the specified ID or Not Found</returns>
     [HttpGet]
     [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<Flight>> GetFlightById(int id)
     {
         using (logger.BeginScope("Get Flight By Id"))
@@ -65,6 +70,8 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     /// <param name="newCreateFlight">New flight data</param>
     /// <returns>ID of new created flight</returns>
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<int>> CreateFlight([FromBody] CreateFlightDto newCreateFlight)
     {
         using (logger.BeginScope("Create Flight"))
@@ -97,6 +104,9 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     /// <returns>OK if updated or No Content</returns>
     [HttpPut]
     [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> UpdateFlight(int id, [FromBody] UpdateFlightDto updateFlightDto)
     {
         using (logger.BeginScope("Get Flight By Id"))
@@ -130,6 +140,9 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     /// <returns>Ok if deleted or No Content</returns>
     [HttpDelete]
     [Route("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> DeleteFlight(int id)
     {
         try
