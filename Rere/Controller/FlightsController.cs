@@ -96,7 +96,7 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
                         CreateProblemDetails("Bad Request", "Flight information in body cannot be recognised",
                             StatusCodes.Status400BadRequest));
 
-                var newFlight = mapper.Map<Flight>(newCreateFlight);
+                var newFlight = mapper.Map<CreateFlightDto, Flight>(newCreateFlight);
                 var flightId = await service.CreateFlightAsync(newFlight);
                 // Return a relative URI to the new flight
                 var flightUri = $"api/flights/{flightId}";

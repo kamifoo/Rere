@@ -1,22 +1,28 @@
 Feature: Manage Flight Information
 
+# GET /api/ﬂights: Retrieve all ﬂights
+
     Scenario: Retrieve all flights
         Given the flight API has been initialized with flight data
         When I send a GET request to /api/flights
         Then I should receive a 200 OK response
         And the response should contain a list of all flights
 
+# GET /api/ﬂights/{id}: Retrieve a speciﬁc ﬂight by ID
+
     Scenario: Retrieve a specific flight by ID
         Given a flight with ID 1 exists
         When I send a GET request to /api/flights/1
         Then I should receive a 200 OK response
         And the response should contain the flight details with ID 1
-#
-#  Scenario: Create a new flight
-#    Given I have a valid flight payload
-#    When I send a POST request to /api/flights with the payload
-#    Then I should receive a 201 Created response
-#    And the flight should be stored in the system
+
+# POST /api/ﬂights: Create a new ﬂight
+
+    Scenario: Create a new flight
+        Given I have a valid flight payload
+        When I send a POST request to /api/flights with the payload
+        Then I should receive a 201 Created response
+        And the flight should be stored in the system
 #
 #  Scenario: Update an existing flight
 #    Given a flight with ID 1 exists

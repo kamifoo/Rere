@@ -29,9 +29,8 @@ public class CreateFlightDto
     [Required(ErrorMessage = "Flight departure time is required")]
     public DateTime ArrivalTime { get; set; }
 
-    [Required(ErrorMessage =
-        "Flight status is required")]
+    [Required(ErrorMessage = "Flight status is required")]
     [EnumDataType(typeof(FlightStatus),
         ErrorMessage = "Flight status must be one of the following: Scheduled, Delayed, Canceled, InAir, Landed")]
-    public FlightStatus Status { get; set; }
+    public string Status { get; set; }
 }
