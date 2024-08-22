@@ -1,12 +1,11 @@
 using AutoMapper;
-using Rere.DTOs.Flight;
 using FlightModel = Rere.Core.Models.Flight.Flight;
 
-namespace Rere.Infrastructure.Mapping;
+namespace Rere.DTOs.Flight;
 
-public class MappingProfile : Profile
+public class FlightMappingProfile : Profile
 {
-    public MappingProfile()
+    public FlightMappingProfile()
     {
         CreateMap<CreateFlightDto, FlightModel>();
         CreateMap<UpdateFlightDto, FlightModel>();
