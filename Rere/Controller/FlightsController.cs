@@ -134,7 +134,7 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
                         CreateProblemDetails("Bad Request", "Flight information in body cannot be recognised",
                             StatusCodes.Status400BadRequest));
 
-                var updateFlight = mapper.Map<Flight>(updateFlightDto);
+                var updateFlight = mapper.Map<UpdateFlightDto, Flight>(updateFlightDto);
                 await service.UpdateFlightAsync(id, updateFlight);
                 return Ok();
             }
@@ -169,7 +169,7 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
             try
             {
                 await service.DeleteFlightAsync(id);
-                return Ok();
+                return NoContent();
             }
             catch (ResourceNotFoundException<Flight> ex)
             {

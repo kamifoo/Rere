@@ -28,5 +28,5 @@ public class UpdateFlightDto
 
     [EnumDataType(typeof(FlightStatus),
         ErrorMessage = "Flight status must be one of the following: Scheduled, Delayed, Canceled, InAir, Landed")]
-    public FlightStatus Status { get; set; }
+    public string Status { get; set; }
 }

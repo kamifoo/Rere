@@ -54,7 +54,7 @@ public class FlightMappingProfileTests
             ArrivalAirport = "ALK",
             DepartureTime = TimeProvider.System.GetUtcNow().DateTime,
             ArrivalTime = TimeProvider.System.GetUtcNow().DateTime.AddHours(5),
-            Status = FlightStatus.Scheduled
+            Status = "Scheduled"
         };
 
         var model = _mapper.Map<Flight>(dto);
@@ -66,7 +66,7 @@ public class FlightMappingProfileTests
         Assert.That(model.ArrivalAirport, Is.EqualTo(dto.ArrivalAirport));
         Assert.That(model.DepartureTime, Is.EqualTo(dto.DepartureTime));
         Assert.That(model.ArrivalTime, Is.EqualTo(dto.ArrivalTime));
-        Assert.That(model.Status, Is.EqualTo(dto.Status));
+        Assert.That(model.Status, Is.EqualTo(FlightStatus.Scheduled));
     }
 
     [Test]
