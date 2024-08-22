@@ -8,14 +8,14 @@ namespace Rere.Repositories.Flight;
 
 public class FlightSearchQuery : SearchQuery<FlightModel>
 {
-    public int[]? SearchIds { get; set; }
-    public string[]? SearchFlightNumbers { get; set; }
-    public string[]? SearchAirlines { get; set; }
-    public string[]? SearchDepartureAirports { get; set; }
-    public string[]? SearchArrivalAirports { get; set; }
+    public List<int> SearchIds { get; set; } = [];
+    public List<string> SearchFlightNumbers { get; set; } = [];
+    public List<string> SearchAirlines { get; set; } = [];
+    public List<string> SearchDepartureAirports { get; set; } = [];
+    public List<string> SearchArrivalAirports { get; set; } = [];
     public DateTime? SearchDepartureTime { get; set; }
     public DateTime? SearchArrivalTime { get; set; }
-    public FlightStatus[]? SearchStatuses { get; set; }
+    public List<FlightStatus> SearchStatuses { get; set; } = [];
 
     public override Expression<Func<FlightModel, bool>> SearchCriteria => BuildCriteria();
 
@@ -23,19 +23,19 @@ public class FlightSearchQuery : SearchQuery<FlightModel>
     {
         Expression<Func<FlightModel, bool>> criteria = flight => true;
 
-        if (SearchIds != null && SearchIds.Any())
+        if (SearchIds.Count > 0)
             criteria = criteria.AndAlso(flight => SearchIds.Contains(flight.Id));
 
-        if (SearchFlightNumbers != null && SearchFlightNumbers.Any())
+        if (SearchFlightNumbers.Count > 0)
             criteria = criteria.AndAlso(flight => SearchFlightNumbers.Contains(flight.FlightNumber));
 
-        if (SearchAirlines != null && SearchAirlines.Any())
+        if (SearchAirlines.Count > 0)
             criteria = criteria.AndAlso(flight => SearchAirlines.Contains(flight.Airline));
 
-        if (SearchDepartureAirports != null && SearchDepartureAirports.Any())
+        if (SearchDepartureAirports.Count > 0)
             criteria = criteria.AndAlso(flight => SearchDepartureAirports.Contains(flight.DepartureAirport));
 
-        if (SearchArrivalAirports != null && SearchArrivalAirports.Any())
+        if (SearchArrivalAirports.Count > 0)
             criteria = criteria.AndAlso(flight => SearchArrivalAirports.Contains(flight.ArrivalAirport));
 
         if (SearchDepartureTime.HasValue)
@@ -44,7 +44,7 @@ public class FlightSearchQuery : SearchQuery<FlightModel>
         if (SearchArrivalTime.HasValue)
             criteria = criteria.AndAlso(flight => flight.DepartureTime <= SearchArrivalTime.Value);
 
-        if (SearchStatuses != null && SearchStatuses.Any())
+        if (SearchStatuses.Count > 0)
             criteria = criteria.AndAlso(flight => SearchStatuses.Contains(flight.Status));
 
         return criteria;

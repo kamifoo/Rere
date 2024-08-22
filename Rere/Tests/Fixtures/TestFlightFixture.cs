@@ -64,7 +64,7 @@ public static class TestFlightFixture
                 ArrivalAirport = "CTU",
                 DepartureTime = TimeProvider.System.GetUtcNow().DateTime,
                 ArrivalTime = TimeProvider.System.GetUtcNow().DateTime.AddHours(1),
-                Status = FlightStatus.Canceled
+                Status = FlightStatus.Landed
             },
             new()
             {
