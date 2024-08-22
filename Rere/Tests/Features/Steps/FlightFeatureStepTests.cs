@@ -29,18 +29,6 @@ public class FlightFeatureStepTests(TestRereServerFixture fixture)
         _response = await _client.GetAsync("api/flights");
     }
 
-    [Then(@"I should receive a (.*) OK response")]
-    public void ThenIShouldReceiveAOkResponse(int statusCode)
-    {
-        _response!.StatusCode.Should().Be((HttpStatusCode)statusCode);
-    }
-
-    [Then(@"I should receive a (.*) Created response")]
-    public void ThenIShouldReceiveACreatedResponse(int statusCode)
-    {
-        _response!.StatusCode.Should().Be((HttpStatusCode)statusCode);
-    }
-
     [Then(@"the response should contain a list of all flights")]
     public async Task ThenTheResponseShouldContainAListOfAllFlights()
     {
@@ -150,5 +138,51 @@ public class FlightFeatureStepTests(TestRereServerFixture fixture)
         var getDeletedFlightResult = await _client.GetAsync($"api/flights/{_testingFlightId}");
         var deletedFlight = await getDeletedFlightResult.Content.ReadAsStringAsync();
         deletedFlight.Should().Contain("404");
+    }
+
+    [Given(@"flights exist in the system")]
+    public void GivenFlightsExistInTheSystem()
+    {
+        // Skip this as In Memory DB has data seeded
+    }
+
+    [Then(@"the response should contain flights matching the search criteria")]
+    public async Task ThenTheResponseShouldContainFlightsMatchingTheSearchCriteria()
+    {
+        var searchedFlights = await _response!.Content.ReadAsStringAsync();
+        searchedFlights.Should().NotBeNullOrEmpty();
+    }
+
+    [When(
+        @"I send a GET request to search with id and flight number parameters /api/flights/search\?id=(.*)&flightNumber=(.*)")]
+    public async Task WhenISendAGetRequestToSearchWithMultipleParametersApiFlightsSearchIdFlightNumber(string id,
+        string flightNumber)
+    {
+        _response = await _client.GetAsync($"api/flights/search?id={id}&flightNumber={flightNumber}");
+    }
+
+    [When(@"I send a GET request to search with single parameter /api/flights/search\?(.*)=(.*)")]
+    public async Task WhenISendAgetRequestToSearchWithSingleParametersApiFlightsSearch(string param, string value)
+    {
+        _response = await _client.GetAsync($"api/flights/search?{param}={value}");
+    }
+
+    [When(@"I send a GET request to search with single wrong parameter /api/flights/search\?company=NZ,CA")]
+    public async Task WhenISendAgetRequestToSearchWithSingleWrongParameterApiFlightsSearch()
+    {
+        _response = await _client.GetAsync($"api/flights/search?company=NZ,CA");
+    }
+
+    [Then(@"I should receive a (.*) (.*) response")]
+    public void ThenIShouldReceiveACorrectResponse(int statusCode, string statusDescription)
+    {
+        _response!.StatusCode.Should().Be((HttpStatusCode)statusCode);
+    }
+
+    [When(
+        @"I send a GET request to search with multiple wrong parameters /api/flights/search\?company=NZ,CA&weather=sunny")]
+    public async Task WhenISendAgetRequestToSearchWithMultipleWrongParametersApiFlightsSearch()
+    {
+        _response = await _client.GetAsync($"api/flights/search?company=NZ,CA&weather=sunny");
     }
 }

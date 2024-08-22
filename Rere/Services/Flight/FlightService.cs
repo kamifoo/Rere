@@ -36,7 +36,6 @@ public class FlightService(IFlightRepository flightRepository) : IFlightService
         if (await flightRepository.ExistsAsync(id) is false)
             throw new ResourceNotFoundException<FlightModel>(id);
 
-        var flight = flightRepository.GetByIdOrNullAsync(id).Result!;
         await flightRepository.DeleteAsync(id);
     }
 

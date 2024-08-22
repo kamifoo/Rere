@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
+using Rere.Controller.Attributes;
 using Rere.Core.Exceptions;
 using Rere.Core.Models.Flight;
 using Rere.Core.Services.Flight;
@@ -190,6 +191,7 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ValidateQueryParameters]
     public async Task<ActionResult<IEnumerable<GetFlightDto>>> SearchFlights(
         [FromQuery] FlightSearchParams flightSearchParams)
     {
