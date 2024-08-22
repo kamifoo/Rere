@@ -3,7 +3,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using Rere.Infrastructure.Extension;
 
-namespace Rere.Tests.Extensions;
+namespace Rere.Tests.Infrastructure.Extensions;
 
 [TestFixture]
 public class ExpressionExtensionsTests
@@ -28,14 +28,11 @@ public class ExpressionExtensionsTests
     [Test]
     public void AndAlso_ShouldHandleNullValues()
     {
-        // Arrange
         Expression<Func<string, bool>> expr1 = s => s != null;
         Expression<Func<string, bool>> expr2 = s => s.Length > 3;
 
-        // Act
         var combinedExpression = expr1.AndAlso(expr2);
 
-        // Assert
         var compiled = combinedExpression.Compile();
         compiled("Hello").Should().BeTrue(); // "Hello" != null && "Hello".Length > 3
         compiled("Hi").Should().BeFalse(); // "Hi" != null && "Hi".Length > 3
@@ -45,15 +42,12 @@ public class ExpressionExtensionsTests
     [Test]
     public void AndAlso_ShouldCombineWithMultipleExpressions()
     {
-        // Arrange
         Expression<Func<int, bool>> expr1 = x => x > 0;
         Expression<Func<int, bool>> expr2 = x => x < 100;
         Expression<Func<int, bool>> expr3 = x => x % 2 == 0;
 
-        // Act
         var combinedExpression = expr1.AndAlso(expr2).AndAlso(expr3);
 
-        // Assert
         var compiled = combinedExpression.Compile();
         compiled(50).Should().BeTrue(); // 50 > 0 && 50 < 100 && 50 % 2 == 0
         compiled(101).Should().BeFalse(); // 101 > 0 && 101 < 100 && 101 % 2 == 0
