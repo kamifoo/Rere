@@ -23,7 +23,7 @@ public class InMemoryFlightReader(RereDbContext context) : IFlightReader
         return await context.Flights.ToListAsync();
     }
 
-    public async Task<IEnumerable<FlightModel>> SearchAsync(SearchQuery<FlightModel> query)
+    public async Task<IEnumerable<FlightModel>> SearchFlightsAsync(SearchQuery<FlightModel> query)
     {
         var querySearchCriteria = query.SearchCriteria;
         return await context.Flights.Where(querySearchCriteria).ToListAsync();

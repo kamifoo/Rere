@@ -37,7 +37,7 @@ public class FlightService(IFlightRepository flightRepository) : IFlightService
             throw new ResourceNotFoundException<FlightModel>(id);
 
         var flight = flightRepository.GetByIdOrNullAsync(id).Result!;
-        await flightRepository.DeleteAsync(flight);
+        await flightRepository.DeleteAsync(id);
     }
 
     public async Task<IEnumerable<FlightModel>> SearchFlights(SearchQuery<FlightModel> flightSearchQuery)

@@ -107,7 +107,7 @@ public class FlightRepositoryTests
         var flight = new FlightModel { Id = 1 };
         _flightWriterMock.Setup(writer => writer.DeleteFlight(flight.Id)).Returns(Task.CompletedTask);
 
-        await _flightRepository.DeleteAsync(flight);
+        await _flightRepository.DeleteAsync(flight.Id);
 
         _flightWriterMock.Verify(writer => writer.DeleteFlight(flight.Id), Times.Once);
     }
@@ -118,7 +118,7 @@ public class FlightRepositoryTests
         var flights = new List<FlightModel> { new() { Id = 1, FlightNumber = "FL001" } };
         var query = new FlightSearchQuery();
 
-        _flightReaderMock.Setup(reader => reader.SearchAsync(query)).ReturnsAsync(flights);
+        _flightReaderMock.Setup(reader => reader.SearchFlightsAsync(query)).ReturnsAsync(flights);
 
         var result = await _flightRepository.SearchAsync(query);
 

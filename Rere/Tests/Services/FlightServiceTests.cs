@@ -121,10 +121,10 @@ public class FlightServiceTests
             .Setup(repo => repo.GetByIdOrNullAsync(It.IsAny<int>()))
             .ReturnsAsync(flight);
         _flightRepositoryMock
-            .Setup(repo => repo.DeleteAsync(It.IsAny<Flight>()));
+            .Setup(repo => repo.DeleteAsync(It.IsAny<int>()));
 
         Assert.DoesNotThrowAsync(async () => await _flightService.DeleteFlightAsync(1));
-        _flightRepositoryMock.Verify(repo => repo.DeleteAsync(flight), Times.Once);
+        _flightRepositoryMock.Verify(repo => repo.DeleteAsync(flight.Id), Times.Once);
         return Task.CompletedTask;
     }
 

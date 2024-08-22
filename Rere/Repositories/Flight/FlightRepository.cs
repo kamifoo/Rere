@@ -26,7 +26,7 @@ public class FlightRepository(IFlightReader reader, IFlightWriter writer) : IFli
 
     public async Task<IEnumerable<FlightModel>> SearchAsync(SearchQuery<FlightModel> query)
     {
-        return await reader.SearchAsync(query);
+        return await reader.SearchFlightsAsync(query);
     }
 
     public async Task<int> AddAsync(FlightModel flight)
@@ -39,8 +39,8 @@ public class FlightRepository(IFlightReader reader, IFlightWriter writer) : IFli
         await writer.UpdateFlight(flight);
     }
 
-    public async Task DeleteAsync(FlightModel flight)
+    public async Task DeleteAsync(int id)
     {
-        await writer.DeleteFlight(flight.Id);
+        await writer.DeleteFlight(id);
     }
 }

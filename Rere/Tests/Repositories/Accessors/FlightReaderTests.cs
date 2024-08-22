@@ -71,7 +71,7 @@ public class FlightReaderTests
         {
             SearchFlightNumbers = ["NZ359"]
         };
-        var result = (await _flightReader.SearchAsync(query)).ToArray();
+        var result = (await _flightReader.SearchFlightsAsync(query)).ToArray();
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result, Has.Exactly(0).Items);
@@ -85,7 +85,7 @@ public class FlightReaderTests
             SearchFlightNumbers = ["NZ421"]
         };
 
-        var result = (await _flightReader.SearchAsync(query)).ToArray();
+        var result = (await _flightReader.SearchFlightsAsync(query)).ToArray();
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result, Has.Exactly(2).Items);
@@ -122,7 +122,7 @@ public class FlightReaderTests
                 query.SearchStatuses.Add(status);
 
 
-        var result = (await _flightReader.SearchAsync(query)).ToArray();
+        var result = (await _flightReader.SearchFlightsAsync(query)).ToArray();
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result, Has.Exactly(expectedResultCount).Items);
