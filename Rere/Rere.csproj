@@ -32,8 +32,4 @@
         <ProjectReference Include="..\Rere.Core\Rere.Core.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Infrastructure\Logging\"/>
-    </ItemGroup>
-
 </Project>

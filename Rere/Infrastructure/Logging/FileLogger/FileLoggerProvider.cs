@@ -5,7 +5,7 @@ public class FileLoggerProvider : ILoggerProvider
     private readonly string _logFilePath;
     private readonly string _logDateTime;
 
-    public FileLoggerProvider(string logFilePath)
+    public FileLoggerProvider(string logFilePath = "logs/Default")
     {
         _logDateTime = DateTime.UtcNow.ToString("s");
         _logFilePath = $"{logFilePath}/{_logDateTime}.rere.api.log";
