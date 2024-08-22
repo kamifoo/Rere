@@ -12,8 +12,8 @@ public static class TestFlightFixture
             Airline = "NZ",
             DepartureAirport = "WLG",
             ArrivalAirport = "AKL",
-            DepartureTime = new DateTime(2023, 12, 5, 10, 0, 0, DateTimeKind.Utc),
-            ArrivalTime = new DateTime(2023, 12, 5, 14, 0, 0, DateTimeKind.Utc),
+            DepartureTime = TimeProvider.System.GetUtcNow().DateTime,
+            ArrivalTime = TimeProvider.System.GetUtcNow().DateTime.AddHours(1),
             Status = FlightStatus.Canceled
         };
     }
@@ -29,8 +29,8 @@ public static class TestFlightFixture
                 Airline = "NZ",
                 DepartureAirport = "WLG",
                 ArrivalAirport = "AKL",
-                DepartureTime = new DateTime(2024, 8, 19, 10, 0, 0),
-                ArrivalTime = new DateTime(2024, 8, 19, 18, 0, 0),
+                DepartureTime = TimeProvider.System.GetUtcNow().DateTime,
+                ArrivalTime = TimeProvider.System.GetUtcNow().DateTime.AddHours(1),
                 Status = FlightStatus.Scheduled
             },
             new()
@@ -40,8 +40,8 @@ public static class TestFlightFixture
                 Airline = "CA",
                 DepartureAirport = "PEK",
                 ArrivalAirport = "AKL",
-                DepartureTime = new DateTime(2024, 8, 20, 14, 30, 0),
-                ArrivalTime = new DateTime(2024, 8, 20, 17, 30, 0),
+                DepartureTime = TimeProvider.System.GetUtcNow().DateTime,
+                ArrivalTime = TimeProvider.System.GetUtcNow().DateTime.AddHours(1),
                 Status = FlightStatus.InAir
             },
             new()
@@ -51,8 +51,8 @@ public static class TestFlightFixture
                 Airline = "CA",
                 DepartureAirport = "AKL",
                 ArrivalAirport = "PEK",
-                DepartureTime = new DateTime(2024, 8, 21, 7, 15, 0),
-                ArrivalTime = new DateTime(2024, 8, 21, 9, 15, 0),
+                DepartureTime = TimeProvider.System.GetUtcNow().DateTime,
+                ArrivalTime = TimeProvider.System.GetUtcNow().DateTime.AddHours(1),
                 Status = FlightStatus.Delayed
             },
             new()
@@ -62,8 +62,8 @@ public static class TestFlightFixture
                 Airline = "3C",
                 DepartureAirport = "PEK",
                 ArrivalAirport = "CTU",
-                DepartureTime = new DateTime(2024, 8, 22, 16, 45, 0),
-                ArrivalTime = new DateTime(2024, 8, 22, 18, 45, 0),
+                DepartureTime = TimeProvider.System.GetUtcNow().DateTime,
+                ArrivalTime = TimeProvider.System.GetUtcNow().DateTime.AddHours(1),
                 Status = FlightStatus.Canceled
             },
             new()
@@ -73,8 +73,8 @@ public static class TestFlightFixture
                 Airline = "NZ",
                 DepartureAirport = "AKL",
                 ArrivalAirport = "WLG",
-                DepartureTime = new DateTime(2024, 8, 23, 12, 0, 0),
-                ArrivalTime = new DateTime(2024, 8, 23, 13, 15, 0),
+                DepartureTime = TimeProvider.System.GetUtcNow().DateTime,
+                ArrivalTime = TimeProvider.System.GetUtcNow().DateTime.AddHours(1),
                 Status = FlightStatus.Landed
             }
         };
