@@ -18,13 +18,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<RereDbContext>(options =>
-    options.UseInMemoryDatabase("Rere")
-);
-
-// Add customised config
-builder.Services.Configure<FileLoggerOptions>(builder.Configuration.GetSection("FileLogger"));
-
 // Add AutoMapper
 builder.Services.AddAutoMapper(typeof(FlightMappingProfile));
 
@@ -36,25 +29,34 @@ builder.Services.AddScoped<IFlightRepository, FlightRepository>();
 // Service Layer
 builder.Services.AddScoped<IFlightService, FlightService>();
 
-// Customised Logger
+// Load customised config
+builder.Services.Configure<FileLoggerOptions>(builder.Configuration.GetSection("FileLogger"));
+
+// Add Customised Logger
 builder.Services.AddSingleton<ILoggerProvider>(provider =>
 {
     var options = provider.GetRequiredService<IOptions<FileLoggerOptions>>().Value;
     return new FileLoggerProvider(options.LogFileDirectory);
 });
 
+// Setup InMemory Database if only in development env
+if (builder.Environment.IsDevelopment())
+    builder.Services.AddDbContext<RereDbContext>(options =>
+        options.UseInMemoryDatabase("Rere")
+    );
+
 var app = builder.Build();
 
-// Use swagger
+app.UseRouting();
+app.MapControllers();
+
 if (app.Environment.IsDevelopment())
 {
     // Seed Data
     app.SeedData();
+    // Use swagger
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseRouting();
-app.MapControllers();
 
 app.Run();
