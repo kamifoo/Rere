@@ -179,7 +179,7 @@ namespace Rere.Tests.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update an existing flight", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 28
+#line 29
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -189,19 +189,19 @@ namespace Rere.Tests.Features
             else
             {
                 this.ScenarioStart();
-#line 29
+#line 30
         testRunner.Given("a flight with ID 1 exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 30
+#line 31
         testRunner.And("I have a valid update payload", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 31
+#line 32
         testRunner.When("I send a PUT request to /api/flights/1 with the payload", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 32
+#line 33
         testRunner.Then("I should receive a 200 OK response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 33
+#line 34
         testRunner.And("the flight details should be updated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -215,7 +215,7 @@ namespace Rere.Tests.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a flight", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 36
+#line 38
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -225,16 +225,16 @@ namespace Rere.Tests.Features
             else
             {
                 this.ScenarioStart();
-#line 37
+#line 40
         testRunner.Given("a flight with ID 6 exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 38
+#line 41
         testRunner.When("I send a DELETE request to /api/flights/6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 39
+#line 42
         testRunner.Then("I should receive a 204 No Content response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 40
+#line 43
         testRunner.And("the flight should be removed from the system", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

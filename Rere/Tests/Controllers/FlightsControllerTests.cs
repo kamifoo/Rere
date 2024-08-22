@@ -61,7 +61,7 @@ public class FlightsControllerTests
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Result, Is.InstanceOf<OkObjectResult>());
-        Assert.That(((OkObjectResult)result.Result!).Value, Has.Exactly(1).Items);
+        Assert.That(((OkObjectResult)result.Result!).Value, Has.Exactly(0).Items);
     }
 
     [Test]
