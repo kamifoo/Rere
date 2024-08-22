@@ -1,4 +1,5 @@
 using Rere.Core.Exceptions;
+using Rere.Core.Repositories;
 using FlightModel = Rere.Core.Models.Flight.Flight;
 
 namespace Rere.Core.Services.Flight;
@@ -39,4 +40,11 @@ public interface IFlightService
     /// <param name="id">ID of the flight to be updated</param>
     /// <exception cref="ResourceNotFoundException{T}">Thrown when the flight with the specified ID is not found.</exception>
     Task DeleteFlightAsync(int id);
+
+    /// <summary>
+    /// Search flight with search query
+    /// </summary>
+    /// <param name="flightSearchQuery">Flight search query</param>
+    /// <returns>Flights that meet search conditions</returns>
+    Task<IEnumerable<FlightModel>> SearchFlights(SearchQuery<FlightModel> flightSearchQuery);
 }

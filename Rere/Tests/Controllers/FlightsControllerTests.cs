@@ -5,8 +5,10 @@ using NUnit.Framework;
 using Rere.Controller;
 using Rere.Core.Exceptions;
 using Rere.Core.Models.Flight;
+using Rere.Core.Repositories;
 using Rere.Core.Services.Flight;
 using Rere.DTOs.Flight;
+using Rere.Repositories.Flight;
 
 namespace Rere.Tests.Controllers;
 
@@ -151,5 +153,21 @@ public class FlightsControllerTests
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result, Is.InstanceOf<NoContentResult>());
+    }
+
+    [Test]
+    public async Task SearchFlights_ReturnsOkResult()
+    {
+        _flightMapperMock
+            .Setup(mapper => mapper.Map<FlightSearchParams, FlightSearchQuery>(It.IsAny<FlightSearchParams>()))
+            .Returns(new FlightSearchQuery());
+        _flightServiceMock
+            .Setup(service => service.SearchFlights(It.IsAny<SearchQuery<Flight>>()))
+            .ReturnsAsync(new List<Flight>() { new() });
+
+        var result = await _controllerUnderTest.SearchFlights(new FlightSearchParams());
+
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.Result, Is.InstanceOf<OkObjectResult>());
     }
 }

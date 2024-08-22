@@ -5,6 +5,7 @@ using Rere.Core.Exceptions;
 using Rere.Core.Models.Flight;
 using Rere.Core.Services.Flight;
 using Rere.DTOs.Flight;
+using Rere.Repositories.Flight;
 
 namespace Rere.Controller;
 
@@ -18,9 +19,9 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     /// </summary>
     /// <returns>All flights</returns>
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetFlightDto))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<GetFlightDto>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<IEnumerable<Flight>>> GetAllFlights()
+    public async Task<ActionResult<IEnumerable<GetFlightDto>>> GetAllFlights()
     {
         using (logger.BeginScope("Get All Flights"))
         {
@@ -46,10 +47,10 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     [HttpGet]
     [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetFlightDto))]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Flight>> GetFlightById([Range(1, int.MaxValue)] int id)
+    public async Task<ActionResult<GetFlightDto>> GetFlightById([Range(1, int.MaxValue)] int id)
     {
         using (logger.BeginScope("Get Flight By Id"))
         {
@@ -60,7 +61,7 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
                         CreateProblemDetails("Bad Request", $"{id} should be integer above 0",
                             StatusCodes.Status400BadRequest));
 
-                var flight = await service.GetFlightByIdAsync(id);
+                var flight = await service.GetFlightByIdOrNullAsync(id);
                 if (flight == null)
                     return NotFound(CreateProblemDetails("Not Found", $"Flight with ID {id} was not found.",
                         StatusCodes.Status404NotFound));
@@ -83,7 +84,7 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     /// <returns>ID of new created flight</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<int>> CreateFlight([FromBody] CreateFlightDto newCreateFlight)
     {
@@ -121,7 +122,7 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> UpdateFlight(int id, [FromBody] UpdateFlightDto updateFlightDto)
     {
@@ -160,7 +161,7 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     [Route("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> DeleteFlight([Range(1, int.MaxValue)] int id)
     {
@@ -175,6 +176,50 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
             {
                 logger.LogWarning(ex.Message);
                 return NoContent();
+            }
+            catch (HttpRequestException ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return StatusCode(500, $"Internal Server Error：{ex.Message}");
+            }
+        }
+    }
+
+    [HttpGet]
+    [Route("search")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<IEnumerable<GetFlightDto>>> SearchFlights(
+        [FromQuery] FlightSearchParams flightSearchParams)
+    {
+        using (logger.BeginScope("Search Flights"))
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(
+                        CreateProblemDetails("Bad Request", $"Query cannot be recognised",
+                            StatusCodes.Status400BadRequest));
+
+                var searchQuery = mapper.Map<FlightSearchParams, FlightSearchQuery>(flightSearchParams);
+                var searchResult = await service.SearchFlights(searchQuery);
+                var flightDtos = searchResult.Select(mapper.Map<Flight, GetFlightDto>);
+                return Ok(flightDtos);
+            }
+            catch (AutoMapperMappingException ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return BadRequest(
+                    CreateProblemDetails("Bad Request", $"Query contain invalid information",
+                        StatusCodes.Status400BadRequest));
+            }
+            catch (FormatException ex)
+            {
+                logger.LogError(ex, ex.Message);
+                return BadRequest(
+                    CreateProblemDetails("Bad Request", $"Query contain invalid information",
+                        StatusCodes.Status400BadRequest));
             }
             catch (HttpRequestException ex)
             {

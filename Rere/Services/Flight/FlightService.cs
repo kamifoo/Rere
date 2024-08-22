@@ -1,4 +1,5 @@
 using Rere.Core.Exceptions;
+using Rere.Core.Repositories;
 using Rere.Core.Repositories.Flight;
 using Rere.Core.Services.Flight;
 using FlightModel = Rere.Core.Models.Flight.Flight;
@@ -37,5 +38,10 @@ public class FlightService(IFlightRepository flightRepository) : IFlightService
 
         var flight = flightRepository.GetByIdOrNullAsync(id).Result!;
         await flightRepository.DeleteAsync(flight);
+    }
+
+    public async Task<IEnumerable<FlightModel>> SearchFlights(SearchQuery<FlightModel> flightSearchQuery)
+    {
+        return await flightRepository.SearchAsync(flightSearchQuery);
     }
 }

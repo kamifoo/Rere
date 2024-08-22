@@ -2,6 +2,7 @@ using AutoMapper;
 using NUnit.Framework;
 using Rere.Core.Models.Flight;
 using Rere.DTOs.Flight;
+using Rere.Repositories.Flight;
 
 namespace Rere.Tests.Mapping;
 
@@ -94,5 +95,29 @@ public class FlightMappingProfileTests
         Assert.That(dto.DepartureTime, Is.EqualTo(flight.DepartureTime));
         Assert.That(dto.ArrivalTime, Is.EqualTo(flight.ArrivalTime));
         Assert.That(dto.Status, Is.EqualTo("Scheduled"));
+    }
+
+    [TestCase("1,2,3", new[] { 1, 2, 3 })]
+    [TestCase("4,5,6", new[] { 4, 5, 6 })]
+    [TestCase("7", new[] { 7 })]
+    [TestCase("", new int[0])] // Empty string should map to an empty list
+    [TestCase(" ", new int[0])] // Whitespace should also map to an empty list
+    public void Should_Map_SearchFlightParams_To_FlightSearchQuery_Correctly(string idInput, int[] expectedIds)
+    {
+        var searchParams = new FlightSearchParams { Id = idInput };
+
+        var result = _mapper.Map<FlightSearchParams, FlightSearchQuery>(searchParams);
+
+        Assert.That(result.SearchIds, Is.EqualTo(expectedIds));
+    }
+
+    [TestCase("1,a,2")]
+    [TestCase("abc")]
+    public void Should_Throw_FormatException_For_Invalid_Ids(string idInput)
+    {
+        var searchParams = new FlightSearchParams { Id = idInput };
+
+        Assert.Throws<AutoMapperMappingException>(
+            () => _mapper.Map<FlightSearchParams, FlightSearchQuery>(searchParams));
     }
 }
