@@ -8,10 +8,10 @@ public static class TestFlightFixture
     {
         return new Flight()
         {
-            FlightNumber = "AF567",
-            Airline = "AF",
-            DepartureAirport = "CDG",
-            ArrivalAirport = "JFK",
+            FlightNumber = "NZ402",
+            Airline = "NZ",
+            DepartureAirport = "WLG",
+            ArrivalAirport = "AKL",
             DepartureTime = new DateTime(2023, 12, 5, 10, 0, 0, DateTimeKind.Utc),
             ArrivalTime = new DateTime(2023, 12, 5, 14, 0, 0, DateTimeKind.Utc),
             Status = FlightStatus.Canceled
@@ -25,10 +25,10 @@ public static class TestFlightFixture
             new()
             {
                 Id = 1,
-                FlightNumber = "AA123",
-                Airline = "AA",
-                DepartureAirport = "LAX",
-                ArrivalAirport = "JFK",
+                FlightNumber = "NZ421",
+                Airline = "NZ",
+                DepartureAirport = "WLG",
+                ArrivalAirport = "AKL",
                 DepartureTime = new DateTime(2024, 8, 19, 10, 0, 0),
                 ArrivalTime = new DateTime(2024, 8, 19, 18, 0, 0),
                 Status = FlightStatus.Scheduled
@@ -36,10 +36,10 @@ public static class TestFlightFixture
             new()
             {
                 Id = 2,
-                FlightNumber = "BA456",
-                Airline = "BA",
-                DepartureAirport = "LHR",
-                ArrivalAirport = "ORD",
+                FlightNumber = "CA783",
+                Airline = "CA",
+                DepartureAirport = "PEK",
+                ArrivalAirport = "AKL",
                 DepartureTime = new DateTime(2024, 8, 20, 14, 30, 0),
                 ArrivalTime = new DateTime(2024, 8, 20, 17, 30, 0),
                 Status = FlightStatus.InAir
@@ -47,10 +47,10 @@ public static class TestFlightFixture
             new()
             {
                 Id = 3,
-                FlightNumber = "DL789",
-                Airline = "DL",
-                DepartureAirport = "ATL",
-                ArrivalAirport = "MIA",
+                FlightNumber = "CA784",
+                Airline = "CA",
+                DepartureAirport = "AKL",
+                ArrivalAirport = "PEK",
                 DepartureTime = new DateTime(2024, 8, 21, 7, 15, 0),
                 ArrivalTime = new DateTime(2024, 8, 21, 9, 15, 0),
                 Status = FlightStatus.Delayed
@@ -58,10 +58,10 @@ public static class TestFlightFixture
             new()
             {
                 Id = 4,
-                FlightNumber = "UA101",
-                Airline = "UA",
-                DepartureAirport = "SFO",
-                ArrivalAirport = "SEA",
+                FlightNumber = "3C8890",
+                Airline = "3C",
+                DepartureAirport = "PEK",
+                ArrivalAirport = "CTU",
                 DepartureTime = new DateTime(2024, 8, 22, 16, 45, 0),
                 ArrivalTime = new DateTime(2024, 8, 22, 18, 45, 0),
                 Status = FlightStatus.Canceled
@@ -69,10 +69,10 @@ public static class TestFlightFixture
             new()
             {
                 Id = 5,
-                FlightNumber = "SW202",
-                Airline = "SW",
-                DepartureAirport = "LAS",
-                ArrivalAirport = "PHX",
+                FlightNumber = "NZ421",
+                Airline = "NZ",
+                DepartureAirport = "AKL",
+                ArrivalAirport = "WLG",
                 DepartureTime = new DateTime(2024, 8, 23, 12, 0, 0),
                 ArrivalTime = new DateTime(2024, 8, 23, 13, 15, 0),
                 Status = FlightStatus.Landed
