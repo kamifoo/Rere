@@ -56,8 +56,8 @@ public class FlightsControllerTests
             .Setup(service => service.GetAllFlightAsync())
             .ReturnsAsync(flights);
         _flightMapperMock
-            .Setup(mapper => mapper.Map<Flight, GetFlightDto>(It.IsAny<Flight>()))
-            .Returns(new GetFlightDto());
+            .Setup(mapper => mapper.Map<Flight, FlightDto>(It.IsAny<Flight>()))
+            .Returns(new FlightDto());
 
         var result = await _controllerUnderTest.GetAllFlights();
 
@@ -77,8 +77,8 @@ public class FlightsControllerTests
             .Setup(service => service.GetFlightByIdOrNullAsync(It.IsAny<int>()))!
             .ReturnsAsync(flight);
         _flightMapperMock
-            .Setup(mapper => mapper.Map<Flight, GetFlightDto>(It.IsAny<Flight>()))
-            .Returns(new GetFlightDto());
+            .Setup(mapper => mapper.Map<Flight, FlightDto>(It.IsAny<Flight>()))
+            .Returns(new FlightDto());
 
         var result = await _controllerUnderTest.GetFlightById(1);
 
@@ -103,7 +103,7 @@ public class FlightsControllerTests
     [Test]
     public async Task CreateFlight_ReturnsCreatedAtActionResult()
     {
-        var newFlight = new CreateFlightDto() { };
+        var newFlight = new FlightCreationDto() { };
         _flightServiceMock
             .Setup(service => service.CreateFlightAsync(It.IsAny<Flight>()))
             .ReturnsAsync(1);
@@ -118,7 +118,7 @@ public class FlightsControllerTests
     [Test]
     public async Task UpdateFlight_ReturnsOkResult()
     {
-        var flightToUpdate = new UpdateFlightDto() { Id = 1 };
+        var flightToUpdate = new FlightUpdateDto() { Id = 1 };
         _flightServiceMock
             .Setup(service => service.UpdateFlightAsync(It.IsAny<int>(), It.IsAny<Flight>()));
 
@@ -135,11 +135,11 @@ public class FlightsControllerTests
             .Setup(service => service.UpdateFlightAsync(It.IsAny<int>(), It.IsAny<Flight>()))
             .Throws<ResourceNotFoundException<Flight>>();
 
-        var flightToUpdate = new UpdateFlightDto() { Id = 1 };
+        var flightToUpdate = new FlightUpdateDto() { Id = 1 };
         var result = await _controllerUnderTest.UpdateFlight(1, flightToUpdate);
 
         Assert.That(result, Is.Not.Null);
-        Assert.That(result, Is.InstanceOf<NoContentResult>());
+        Assert.That(result, Is.InstanceOf<NotFoundObjectResult>());
     }
 
     [Test]

@@ -3,7 +3,7 @@ using Rere.Core.Models.Flight;
 
 namespace Rere.DTOs.Flight;
 
-public class UpdateFlightDto
+public class FlightUpdateDto
 {
     [Required(ErrorMessage = "Flight ID is required")]
     public int Id { get; set; }

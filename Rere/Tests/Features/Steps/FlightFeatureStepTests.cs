@@ -53,7 +53,7 @@ public class FlightFeatureStepTests(TestRereServerFixture fixture)
     {
         var flight = await _response!.Content.ReadAsStringAsync();
         flight.Should().NotBeNullOrEmpty();
-        var flightDto = flight.FromJson<GetFlightDto>();
+        var flightDto = flight.FromJson<FlightDto>();
         flightDto.Id.Should().Be(id);
     }
 
@@ -115,7 +115,7 @@ public class FlightFeatureStepTests(TestRereServerFixture fixture)
     {
         var updatedFlightResult = await _client.GetAsync($"api/flights/{_testingFlightId}");
         var updatedFlight = await updatedFlightResult.Content.ReadAsStringAsync();
-        var flightDto = updatedFlight.FromJson<GetFlightDto>();
+        var flightDto = updatedFlight.FromJson<FlightDto>();
         _updateFlightDto.Should().BeEquivalentTo(flightDto);
     }
 

@@ -1,6 +1,6 @@
 namespace Rere.DTOs.Flight;
 
-public class GetFlightDto
+public class FlightDto
 {
     public int Id { get; set; }
 

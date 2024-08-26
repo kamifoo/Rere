@@ -21,7 +21,7 @@ public class FlightMappingProfileTests
     [Test]
     public void Should_Map_CreateFlightDto_To_Flight()
     {
-        var dto = new CreateFlightDto()
+        var dto = new FlightCreationDto()
         {
             FlightNumber = "NZ422",
             Airline = "NZ",
@@ -46,7 +46,7 @@ public class FlightMappingProfileTests
     [Test]
     public void Should_Map_UpdateFlightDto_To_Flight()
     {
-        var dto = new UpdateFlightDto()
+        var dto = new FlightUpdateDto()
         {
             Id = 1,
             FlightNumber = "NZ402",
@@ -85,7 +85,7 @@ public class FlightMappingProfileTests
             Status = FlightStatus.Scheduled
         };
 
-        var dto = _mapper.Map<Flight, GetFlightDto>(flight);
+        var dto = _mapper.Map<Flight, FlightDto>(flight);
 
         Assert.That(dto.Id, Is.EqualTo(flight.Id));
         Assert.That(dto.FlightNumber, Is.EqualTo(flight.FlightNumber));

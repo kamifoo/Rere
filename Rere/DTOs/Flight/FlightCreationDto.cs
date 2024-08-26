@@ -3,7 +3,7 @@ using Rere.Core.Models.Flight;
 
 namespace Rere.DTOs.Flight;
 
-public class CreateFlightDto
+public class FlightCreationDto
 {
     [Required(ErrorMessage = "Flight number is required")]
     [StringLength(6, MinimumLength = 3,
