@@ -2,7 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using Rere.Controller;
+using Rere.Controllers;
 using Rere.Core.Exceptions;
 using Rere.Core.Models.Flight;
 using Rere.Core.Repositories;

@@ -1,14 +1,13 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using NUnit.Framework;
-using Rere.Controller.Attributes;
+using Rere.Controllers.Attributes;
 using Rere.Core.Exceptions;
 using Rere.Core.Models.Flight;
 using Rere.Core.Services.Flight;
 using Rere.DTOs.Flight;
 using Rere.Repositories.Flight;
 
-namespace Rere.Controller;
+namespace Rere.Controllers;
 
 [ApiController]
 [Route("api/[controller]/")]
@@ -39,7 +38,7 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
     [GuardModelState($"Flight ID should be integer above 0")]
-    public async Task<ActionResult<FlightDto>> GetFlightById([Range(1, int.MaxValue)] int id)
+    public async Task<ActionResult<FlightDto>> GetFlightById(int id)
     {
         var flight = await service.GetFlightByIdOrNullAsync(id);
         if (flight == null)
@@ -58,7 +57,6 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    [ValidateQueryParameters]
     [GuardModelState("Flight information in body cannot be recognised")]
     public async Task<ActionResult<int>> CreateFlight([FromBody] FlightCreationDto newFlightCreation)
     {
@@ -81,7 +79,6 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-    [ValidateQueryParameters]
     [GuardModelState("Flight information in body cannot be recognised")]
     public async Task<ActionResult> UpdateFlight(int id, [FromBody] FlightUpdateDto flightUpdateDto)
     {
@@ -109,7 +106,7 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    public async Task<ActionResult> DeleteFlight([Range(1, int.MaxValue)] int id)
+    public async Task<ActionResult> DeleteFlight(int id)
     {
         try
         {
@@ -127,7 +124,7 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
     [Route("search")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
-    [ValidateQueryParameters]
+    [GuardQueryParameters]
     [GuardModelState("Query cannot be recognised")]
     public async Task<ActionResult<IEnumerable<FlightDto>>> SearchFlights(
         [FromQuery] FlightSearchParams flightSearchParams)
@@ -154,7 +151,6 @@ public class FlightsController(ILogger<FlightsController> logger, IFlightService
                     StatusCodes.Status400BadRequest));
         }
     }
-
 
     private static ProblemDetails CreateProblemDetails(string title, string detail, int? status)
     {

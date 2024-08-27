@@ -2,7 +2,7 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Rere.Controller.Attributes;
+namespace Rere.Controllers.Attributes;
 
 public class GuardModelStateAttribute(
     string detail = "The request contains invalid data.")

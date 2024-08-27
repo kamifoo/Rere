@@ -2,12 +2,12 @@ using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Rere.Controller.Attributes;
+namespace Rere.Controllers.Attributes;
 
 /// <summary>
 /// Customised attribute Only allowed parameters should be filtered in
 /// </summary>
-public class ValidateQueryParametersAttribute : ActionFilterAttribute
+public class GuardQueryParametersAttribute : ActionFilterAttribute
 {
     public override void OnActionExecuting(ActionExecutingContext context)
     {
