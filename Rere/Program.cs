@@ -4,12 +4,13 @@ using Rere.Core.Repositories.Flight;
 using Rere.Core.Repositories.Flight.Accessors;
 using Rere.Core.Services.Flight;
 using Rere.DTOs.Flight;
-using Rere.Infrastructure.Database;
-using Rere.Infrastructure.Extension;
-using Rere.Infrastructure.Logging.FileLogger;
-using Rere.Repositories.Flight;
-using Rere.Repositories.Flight.Accessors;
-using Rere.Services.Flight;
+using Rere.Extension;
+using Rere.Extensions;
+using Rere.Infra.Database;
+using Rere.Infra.Logging.FileLogger;
+using Rere.Repository.Flight;
+using Rere.Repository.Flight.Accessors;
+using Rere.Service.Flight;
 
 var builder = WebApplication.CreateBuilder(args);
 

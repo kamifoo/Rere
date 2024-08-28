@@ -2,7 +2,7 @@ using AutoMapper;
 using NUnit.Framework;
 using Rere.Core.Models.Flight;
 using Rere.DTOs.Flight;
-using Rere.Repositories.Flight;
+using Rere.Repository.Flight;
 
 namespace Rere.Tests.Mapping;
 
