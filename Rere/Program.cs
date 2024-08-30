@@ -30,14 +30,14 @@ builder.Services.AddScoped<IFlightRepository, FlightRepository>();
 builder.Services.AddScoped<IFlightService, FlightService>();
 
 // Load customised config
-builder.Services.Configure<FileLoggerOptions>(builder.Configuration.GetSection("FileLogger"));
+// builder.Services.Configure<FileLoggerOptions>(builder.Configuration.GetSection("FileLogger"));
 
 // Add Customised Logger
-builder.Services.AddSingleton<ILoggerProvider>(provider =>
-{
-    var options = provider.GetRequiredService<IOptions<FileLoggerOptions>>().Value;
-    return new FileLoggerProvider(options.LogFileDirectory);
-});
+// builder.Services.AddScoped<ILoggerProvider>(provider =>
+// {
+//     var options = provider.GetRequiredService<IOptions<FileLoggerOptions>>().Value;
+//     return new FileLoggerProvider(options.LogFileDirectory);
+// });
 
 // Setup InMemory Database if only in development env
 if (builder.Environment.IsDevelopment())
