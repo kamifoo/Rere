@@ -8,7 +8,7 @@ using Rere.Core.Models.Flight;
 using Rere.Core.Repositories;
 using Rere.Core.Services.Flight;
 using Rere.DTOs.Flight;
-using Rere.Repositories.Flight;
+using Rere.Repository.Flight;
 
 namespace Rere.Tests.Controllers;
 
